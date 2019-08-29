@@ -3,6 +3,7 @@
 namespace Infrastructure;
 
 use Infrastructure\View;
+use Infrastructure\Request;
 
 class Router
 {
@@ -108,9 +109,11 @@ class Router
      */
     protected static function runRoute(): void
     {
+        $request = Request::getCurrent();
+
         if (is_callable(self::$current_route)) {
             $action = self::$current_route;
-            exit($action());
+            exit($action($request));
         }
         
         $action = explode('@', self::$current_route);
@@ -126,7 +129,7 @@ class Router
             self::show404();
         }
 
-        exit(self::$current_controller->{$method}());
+        exit(self::$current_controller->{$method}($request));
     }
 
     /**
