@@ -27,6 +27,22 @@ class Router
      */
     protected static $current_controller = null;
 
+    public static function __callStatic($name, $arguments): void
+    {
+        $methods = [
+            'get',
+            'post',
+            'put',
+            'patch',
+            'delete'
+        ];
+
+        // If a method is being called that matches the available request methods, add a new route
+        if (in_array($name, $methods)) {
+            self::addRoute(strtoupper($name), $arguments[0], $arguments[1]);
+        }
+    }
+
     /**
      * Run the router to resolve and execute the current request
      *
@@ -36,18 +52,6 @@ class Router
     {
         self::getRoute();
         self::runRoute();
-    }
-
-    /**
-     * Add a new GET route
-     *
-     * @param string $uri Server URI for route
-     * @param mixed $action Action to execute for route
-     * @return void
-     */
-    public static function get(string $uri, $action): void
-    {
-        self::addRoute('GET', $uri, $action);
     }
 
     /**
