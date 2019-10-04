@@ -26,6 +26,13 @@ class Request
     protected $data = [];
 
     /**
+     * Array of any uploaded files sent in the request
+     *
+     * @var array
+     */
+    protected $files = [];
+
+    /**
      * Array of given server headers
      *
      * @var array
@@ -48,7 +55,9 @@ class Request
         $this->params = $_GET;
         
         $json = file_get_contents('php://input');
-        $this->data = json_decode($json);
+        $this->data = empty($json) ? (object) $_POST : json_decode($json);
+
+        $this->files = $_FILES;
 
         $this->headers = getallheaders();
     }
@@ -92,5 +101,15 @@ class Request
     public function data()
     {
         return $this->data;
+    }
+
+    /**
+     * Get any uploaded files in the request
+     *
+     * @return array
+     */
+    public function files()
+    {
+        return $this->files;
     }
 }
