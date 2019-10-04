@@ -2,6 +2,8 @@
 
 namespace Infrastructure;
 
+use Infrastructure\Session;
+use Infrastructure\Env;
 use Infrastructure\Request;
 use Infrastructure\Router;
 
@@ -12,9 +14,15 @@ class App
      *
      * @return void
      */
-    public static function boot(): void
+    public static function boot()
     {
+        Session::start();
+
+        Env::load();
+        
         require_once __DIR__ . '/../../app/Routes/routes.php';
+
+        require_once __DIR__ . '/globals.php';
 
         Request::setCurrent();
 
