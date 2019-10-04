@@ -3,6 +3,7 @@
 namespace Infrastructure;
 
 use Infrastructure\Session;
+use Infrastructure\Env;
 use Infrastructure\Request;
 use Infrastructure\Router;
 
@@ -17,6 +18,8 @@ class App
     {
         Session::start();
 
+        Env::load();
+        
         require_once __DIR__ . '/../../app/Routes/routes.php';
 
         Request::setCurrent();
